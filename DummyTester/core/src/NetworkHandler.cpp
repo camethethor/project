@@ -20,7 +20,7 @@ NetworkHandler* NetworkHandler::GetInstance()
 	return _self_instance;
 }
 
-void NetworkHandler::Stop()
+void NetworkHandler::ReleaseInstance()
 {
 	DestroyIOCP();
 
@@ -31,25 +31,17 @@ void NetworkHandler::Stop()
 	}
 }
 
-bool NetworkHandler::Start()
+bool NetworkHandler::Initialize()
 {
-	if( false == Initialize() )
+	WSADATA wsd;
+	_iocp_hdle = NULL;
+
+	if(::WSAStartup(MAKEWORD(2, 2), &wsd) !=0 )
 		return false;
 
 	if( false == CreateIOCP() )
 		return false;
 
-	return true;
-}
-
-bool NetworkHandler::Initialize()
-{
-	WSADATA wsd;
-	
-	if(::WSAStartup(MAKEWORD(2, 2), &wsd) !=0 )
-		return false;
-	
-	_iocp_hdle = NULL;
 	return true;
 }
 

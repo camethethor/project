@@ -6,8 +6,8 @@ class NetworkHandler
 public:
 	static NetworkHandler* GetInstance();
 
-	bool Start();
-	void Stop();
+	bool Initialize();
+	void ReleaseInstance();
 
 	bool Associate( HANDLE hDevice, ULONG_PTR pCompletionKey );
 	HANDLE GetIOCPHandle() { return _iocp_hdle; }
@@ -16,7 +16,6 @@ private:
 	NetworkHandler();
 	~NetworkHandler();
 	
-	bool Initialize();
 	bool CreateIOCP();
 	void DestroyIOCP();
 	bool CreateThreadPool();

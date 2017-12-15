@@ -6,7 +6,7 @@
 
 int _tmain( int argc, _TCHAR* argv[] )
 {
-	if( NetworkHandler::GetInstance()->Start() == false )
+	if( NetworkHandler::GetInstance()->Initialize() == false )
 	{
 		return false;
 	}
@@ -22,7 +22,7 @@ int _tmain( int argc, _TCHAR* argv[] )
 		WaitForSingleObject( INVALID_HANDLE_VALUE, RECONNECT_INTERVAL );
 	}
 
-	NetworkHandler::GetInstance()->Stop();
+	NetworkHandler::GetInstance()->ReleaseInstance();
 	DummyManager::GetInstance()->ReleaseInstance();
 	
 	return 0;
