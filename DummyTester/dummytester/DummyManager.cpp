@@ -55,6 +55,8 @@ bool DummyManager::Initialize()
 
 		if( NULL != dmy )
 			_dummy_container.Insert( index, dmy );
+		else
+			return false;
 	}
 
 	return true;
