@@ -20,6 +20,7 @@ DummyFactory*  DummyFactory::GetInstance()
 	return _self_instance;
 }
 
+// 팩토리패턴은 아니고 그냥 관용구
 Dummy* DummyFactory::CreateDummy( const DUMMY_TYPE type, const unsigned long id )
 {
 	Dummy* dmy = NULL;

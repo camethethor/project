@@ -50,6 +50,7 @@ bool DummyManager::Initialize()
 
 	for( int index = ID_INITVAL; index < ID_INITVAL + SESSION_COUNT; ++index )
 	{
+		// ID_INITVAL 부터 ID_INITVAL+SESSION_COUNT 만큼의 ID를 가진 더미 생성
 		dmy = DummyFactory::GetInstance()->CreateDummy( DUMMYTYPE_KR, index );
 
 		if( NULL != dmy )
@@ -105,26 +106,18 @@ bool DummyManager::Initialize()
 
 bool DummyManager::Start()
 {
-	int start_count = 0;
-	int alive_count = 0;
-
 	Map<unsigned long, Dummy*>::MAP_POSITION pos = _dummy_container.HeadPosition();
 
 	while( false == _dummy_container.IsEnd( pos ))
 	{
 		if( false == pos->second->GetAlive())
 		{
-			++start_count;
 			pos->second->Run();
-			Sleep(100);
+			//Sleep(100);
 		}
-		else
-			++alive_count;
-
 		++pos;
 	}
-
-	printf("Connection state [on Game: %04d], [on Login+Game: %04d], [on Start: %04d]\n", _active_count, alive_count, start_count );
+	
 	return true;
 }
 

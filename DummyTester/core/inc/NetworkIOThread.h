@@ -4,10 +4,10 @@
 class NetworkIOThread : public Thread
 {
 public:
-	virtual void Run();
-	void Close();
-
 	NetworkIOThread();
 	~NetworkIOThread();
+
+	virtual void Run();
+	void Close();
 };
 
