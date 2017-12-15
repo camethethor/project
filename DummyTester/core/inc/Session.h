@@ -15,6 +15,20 @@ private:
 		ASYNCFLAG_RECEIVE = 0x02,
 	};
 
+	struct BIT_IP 
+	{
+		DWORD ip_1 : 8;
+		DWORD ip_2 : 8;
+		DWORD ip_3 : 8;
+		DWORD ip_4 : 8;
+	};
+
+	typedef union _GETIP
+	{
+		DWORD	ip;
+		BIT_IP	bit_ip;
+	} GETIP;
+
 	typedef struct OVERLAPPEDEX : OVERLAPPED
 	{
 		DWORD _flags;
