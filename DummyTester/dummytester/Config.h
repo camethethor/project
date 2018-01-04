@@ -6,6 +6,7 @@
 
 const int ID_INITVAL			= 5000;				// 더미 ID는 ID_INITVAL 부터 ID_INITVAL + SESSION_COUNT 까지 사용
 const int SESSION_COUNT			= 3000;
+const int DUMMY_TRY_COUNT		= 100;
 const int RECONNECT_INTERVAL	= 10000;
 
 const WORD LOGINSERVER_PORT		= 1080;

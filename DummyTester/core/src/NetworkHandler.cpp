@@ -91,7 +91,7 @@ void NetworkHandler::DestroyIOCP()
 {	
 	if( _iocp_hdle )
 	{
-		for( DWORD i = 0 ; i != _work_thread_cnt ; i++ )
+		for( DWORD i = 0; i != _work_thread_cnt; ++i )
 		{
 			PostQueuedCompletionStatus(_iocp_hdle, 0, NULL, NULL);
 		}
@@ -102,9 +102,9 @@ void NetworkHandler::DestroyIOCP()
 	
 	::Sleep( 1000 );
 
-	for( DWORD dwIndex = 0; dwIndex != _work_thread_cnt; ++dwIndex )
+	for( int idx = 0; idx != _work_thread_cnt; ++idx )
 	{
-		((NetworkIOThread*)&_work_thread_arr[dwIndex])->Close();
+		((NetworkIOThread*)&_work_thread_arr[idx])->Close();
 	}
 
 	if( _work_thread_arr )

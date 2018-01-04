@@ -16,7 +16,7 @@ int _tmain( int argc, _TCHAR* argv[] )
 		return false;
 	}
 
-	while(true)
+	for(int i = 0; i <= DUMMY_TRY_COUNT; i++ )
 	{
 		DummyManager::GetInstance()->Start();
 		WaitForSingleObject( INVALID_HANDLE_VALUE, RECONNECT_INTERVAL );
