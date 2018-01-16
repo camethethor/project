@@ -5,7 +5,7 @@ class KRDummy :	public Dummy
 {
 public:
 	KRDummy(const unsigned long id);
-	~KRDummy(void);
+	virtual ~KRDummy(void);
 
 	virtual void	Run();
 

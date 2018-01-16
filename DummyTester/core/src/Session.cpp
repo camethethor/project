@@ -93,7 +93,7 @@ bool Session::ConnectTo( const char* address, WORD port )
     ::setsockopt( _sock, SOL_SOCKET, SO_REUSEADDR, (char *)&reuse, sizeof( reuse ) );
 
 	DWORD dwBytes = 0;
-	WSAIoctl( _sock, SIO_KEEPALIVE_VALS, &_keep_alive, sizeof(TCP_KEEPALIVE), NULL, NULL, &dwBytes, &_recv_overlap, NULL );
+	WSAIoctl( _sock, SIO_KEEPALIVE_VALS, &_keep_alive, sizeof(tcp_keepalive), NULL, NULL, &dwBytes, &_recv_overlap, NULL );
 	
 	DWORD ret_ip = ::inet_addr( address );
 	

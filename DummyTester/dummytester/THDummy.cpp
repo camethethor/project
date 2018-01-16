@@ -21,7 +21,7 @@ void THDummy::Run()
 	
 	Packet sendmsg( SF_LOGIN_REQ );
 	sendmsg << TH_CLIENT_VERSION << static_cast<long>(_id) << static_cast<long>(GetTickCount()) << "account" << "LKAJDSJDUW!@#KDD1" << "aa";
-	_login_session.SendPacket(sendmsg);
+	_login_session->SendPacket(sendmsg);
 }
 
 int THDummy::LocalMessageProc(Packet& packet)

@@ -9,7 +9,7 @@ class Dummy
 {
 public:
 	Dummy(const unsigned long id);
-	~Dummy(void);
+	virtual ~Dummy(void);
 
 	void Initialize();
 	void Destroy();
@@ -45,8 +45,8 @@ private:
 	virtual int LocalMessageProc(Packet& packet) = 0;
 
 protected:
-	LoginSession	_login_session;
-	GameSession		_game_session;
+	LoginSession*		_login_session;
+	GameSession*		_game_session;
 
 protected:
 	unsigned long	_id;

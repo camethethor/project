@@ -2,6 +2,7 @@
 
 #include <winsock2.h>
 #include <string>
+#include "mstcpip.h"
 
 const int MAX_SENDINGPACKETSIZE	= (1024*20);
 const int DATABUFFER_SIZE		= (1024*8);
@@ -33,13 +34,6 @@ private:
 	{
 		DWORD _flags;
 	} OVERLAPPEDEX;
-
-	typedef struct tcp_keepalive 
-	{
-		u_long  onoff;
-		u_long  keepalivetime;
-		u_long  keepaliveinterval;
-	} TCP_KEEPALIVE;
 
 public:
 	Session( SOCKET s, int max_sending_size = MAX_SENDINGPACKETSIZE, int recv_buf_size = DATABUFFER_SIZE );
@@ -82,7 +76,7 @@ protected:
 	bool			_active;		
 
 private:
-	TCP_KEEPALIVE		_keep_alive;
+	tcp_keepalive		_keep_alive;
 	OVERLAPPEDEX		_send_overlap;
 	OVERLAPPEDEX		_recv_overlap;
 

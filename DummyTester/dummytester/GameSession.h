@@ -10,7 +10,7 @@ class GameSession : public Session
 {
 public:
 	GameSession( Dummy* dmy );
-	~GameSession(void);
+	virtual ~GameSession(void);
 	
 	virtual bool OnCreate();
 	virtual void OnDestroy();
@@ -20,5 +20,5 @@ private:
 	virtual int PacketParsing( const char* pRecvBuffer, const int nRecvSize );
 
 private:
-	Dummy*			_dummy;
+	Dummy*	_dummy;
 };

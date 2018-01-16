@@ -5,7 +5,7 @@ class THDummy :	public Dummy
 {
 public:
 	THDummy(const unsigned long id);
-	~THDummy(void);
+	virtual ~THDummy(void);
 	
 	virtual void	Run();
 

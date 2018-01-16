@@ -9,15 +9,15 @@ public:
 	static DummyManager* GetInstance();
 	static void ReleaseInstance();
 
-	bool Initialize(void);
-	bool Start(void);
+	bool	Initialize(void);
+	bool	Start(void);
 
 	long	IncreaseActiveCount() { return InterlockedIncrement(&_active_count); }
 	long	DecreaseActiveCount() { return InterlockedDecrement(&_active_count); }
 
 private:
 	DummyManager(void);
-	virtual ~DummyManager(void);
+	~DummyManager(void);
 
 	long	_active_count;
 

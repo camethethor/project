@@ -21,7 +21,7 @@ void KRDummy::Run()
 	
 	Packet sendmsg( SF_LOGIN_REQ );
 	sendmsg << KR_CLIENT_VERSION << static_cast<long>(_id) << "account" << static_cast<long>(GetTickCount()) << "1QA3ASLDKJAWJKASSD";
-	_login_session.SendPacket(sendmsg);
+	_login_session->SendPacket(sendmsg);
 }
 
 int KRDummy::LocalMessageProc(Packet& packet)

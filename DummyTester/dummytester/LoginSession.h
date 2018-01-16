@@ -7,7 +7,7 @@ class LoginSession : public Session
 {
 public:
 	LoginSession(Dummy* dmy );
-	~LoginSession(void);
+	virtual ~LoginSession(void);
 
 	bool Initialize();
 	virtual bool OnCreate();
@@ -18,5 +18,5 @@ private:
 	virtual int PacketParsing( const char* pRecvBuffer, const int nRecvSize );
 
 private:
-	Dummy*			_dummy;
+	Dummy*	_dummy;
 };

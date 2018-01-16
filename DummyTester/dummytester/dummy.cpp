@@ -4,19 +4,23 @@
 #include "Config.h"
 
 Dummy::Dummy(const unsigned long id)
-:_id(id), _is_alive(false), _new_user(false), _login_session(this), _game_session(this)
+:_id(id), _is_alive(false), _new_user(false)
 {
+	_login_session = new LoginSession(this);
+	_game_session = new GameSession(this);
 }
 
 Dummy::~Dummy(void)
 {
+	delete _login_session;
+	delete _game_session;
 }
 
 void Dummy::Destroy()
 {
 	_is_alive = false;
-	_login_session.OnDestroy();
-	_game_session.OnDestroy();
+	_login_session->OnDestroy();
+	_game_session->OnDestroy();
 }
 
 void Dummy::Initialize()
@@ -31,10 +35,10 @@ void Dummy::Initialize()
 
 bool Dummy::LoginSessionRun()
 {
-	if( _login_session.IsActive())
-		_login_session.OnDestroy();
+	if( _login_session->IsActive())
+		_login_session->OnDestroy();
 	
-	if(false == _login_session.OnCreate())
+	if(false == _login_session->OnCreate())
 	{
 		_is_alive = false;
 		return false;
@@ -47,10 +51,10 @@ bool Dummy::LoginSessionRun()
 
 bool Dummy::GameSessionRun()
 {
-	if( _game_session.IsActive())
-		_game_session.OnDestroy();
+	if( _game_session->IsActive())
+		_game_session->OnDestroy();
 	
-	if(false == _game_session.OnCreate())
+	if(false == _game_session->OnCreate())
 	{
 		_is_alive = false;
 		return false;
@@ -213,18 +217,18 @@ void Dummy::OnLoginAck( Packet& packet )
 		Destroy();
 
 	Packet sendmsg(SF_CONNECTCLOSE_REQ);
-	_login_session.SendPacket( sendmsg );
+	_login_session->SendPacket( sendmsg );
 
 	Packet reqmsg(SF_SERVERLIST_REQ);
 	reqmsg << LOGINSERVER_ID << true;
-	_login_session.SendPacket(reqmsg);
+	_login_session->SendPacket(reqmsg);
 }
 
 void Dummy::OnServerListAck( Packet& packet )
 {
 	Packet sendmsg(SF_SERVERIP_REQ);
 	sendmsg << LOGINSERVER_ID << GAMESERVER_ID;
-	_login_session.SendPacket(sendmsg);
+	_login_session->SendPacket(sendmsg);
 }
 
 void Dummy::OnServerIPAck( Packet& packet )
@@ -233,7 +237,7 @@ void Dummy::OnServerIPAck( Packet& packet )
 
 	Packet sendmsg( SF_CONNECTION_REQ );
 	sendmsg << static_cast<long>(_id) << LOGINSERVER_ID << false << false << "T.K";
-	_game_session.SendPacket(sendmsg);
+	_game_session->SendPacket(sendmsg);
 }
 
 
@@ -246,7 +250,7 @@ void Dummy::OnSFCheckOverlapNickNameAck( Packet& packet )
 	{
 		Packet sendmsg(SF_SAVENICKNAME_REQ);
 		sendmsg << _code_name;
-		_game_session.SendPacket(sendmsg);
+		_game_session->SendPacket(sendmsg);
 	}		
 	else
 		Destroy();
@@ -261,7 +265,7 @@ void Dummy::OnSFSaveNickNameAck(Packet& packet)
 	{
 		Packet sendmsg(SF_ENTERFORCESETTING_REQ);
 		sendmsg << static_cast<byte>(1);
-		_game_session.SendPacket(sendmsg);
+		_game_session->SendPacket(sendmsg);
 	}
 	else
 		Destroy();
@@ -276,7 +280,7 @@ void Dummy::OnSFCreateRoomAck(Packet packet)
 	{
 		Packet sendmsg(SF_ENTERROOM_REQ);
 		sendmsg << "" << "";
-		_game_session.SendPacket(sendmsg);
+		_game_session->SendPacket(sendmsg);
 	}
 }
 
@@ -286,24 +290,24 @@ void Dummy::OnSFEnterFoceSettingAck(Packet& packet)
 
 	Packet sendmsg(SF_BUYCHARACTER_REQ);
 	sendmsg << static_cast<long>(DEFAULT_CHARACTER_ITEMID);
-	_game_session.SendPacket(sendmsg);
+	_game_session->SendPacket(sendmsg);
 
 	Sleep(1000);
 	sendmsg.Clear();
 	sendmsg.SetProtocolID( SF_LEAVEFORCESETTING_REQ );
-	_game_session.SendPacket(sendmsg);
+	_game_session->SendPacket(sendmsg);
 
 	sendmsg.Clear();
 	sendmsg.SetProtocolID(SF_ENTERCHANNEL_REQ);
 	sendmsg << static_cast<byte>((_id % MAX_CHANNEL_COUNT)+1);
-	_game_session.SendPacket(sendmsg);
+	_game_session->SendPacket(sendmsg);
 }
 
 void Dummy::OnConnectionAccept( Packet& packet )
 {
 	Packet sendmsg( SF_CONNECTION_REQ );
 	sendmsg << static_cast<long>(_id) << LOGINSERVER_ID >> false >> false >> "tt";
-	_game_session.SendPacket(sendmsg);
+	_game_session->SendPacket(sendmsg);
 }
 
 void Dummy::OnSFEnterRoomAck(Packet& packet)
@@ -339,7 +343,7 @@ void Dummy::OnMatchTeamInfoNotice(Packet& packet)
 	packet >> team_id >> team_name >> win >> lose >> con_win >> con_lose >> rating >> grade;
 
 	Packet sendmsg(SF_MATCHROOMINFO_REQ);
-	_game_session.SendPacket(sendmsg);
+	_game_session->SendPacket(sendmsg);
 }
 
 void Dummy::OnMatchRoomInfoAck(Packet& packet )
@@ -352,7 +356,7 @@ void Dummy::OnMatchRoomInfoAck(Packet& packet )
 
 	Packet sendmsg(SF_OTHERCHANNELENTERROOM_REQ);
 	sendmsg << 1 << room_id << "";
-	_game_session.SendPacket(sendmsg);
+	_game_session->SendPacket(sendmsg);
 }
 
 
@@ -372,7 +376,7 @@ void Dummy::OnConnectionAck( Packet& packet )
 
 	Packet sendmsg( SF_SENDUSERDATA_REQ );
 	sendmsg << "account" << "0011" << ip << UDP_PORT;
-	_game_session.SendPacket(sendmsg);
+	_game_session->SendPacket(sendmsg);
 
 }
 
@@ -387,11 +391,11 @@ void Dummy::OnSendUserDataAck( Packet& packet )
 	{
 		Packet sendmsg( SF_SAVESYSTEMSPEC_REQ);
 		sendmsg << SYSTEM_SPEC;
-		_game_session.SendPacket(sendmsg);
+		_game_session->SendPacket(sendmsg);
 
 		sendmsg.Clear();
 		sendmsg.SetProtocolID(SF_GETDBDATA_REQ);
-		_game_session.SendPacket(sendmsg);
+		_game_session->SendPacket(sendmsg);
 	}
 }
 
@@ -399,42 +403,42 @@ void Dummy::OnWebItemWareDataAck( Packet& packet )
 {
 	Packet sendmsg(SF_UDPDATASTORE_REQ);
 	sendmsg << PING_VALUE;
-	_game_session.SendPacket(sendmsg);
+	_game_session->SendPacket(sendmsg);
 
 	//sendmsg.Clear();
 	//sendmsg.SetProtocolID(SF_MATCHROOMINFO_REQ);
-	//_game_session.SendPacket(sendmsg);
+	//_game_session->SendPacket(sendmsg);
 
 	sendmsg.Clear();
 	sendmsg.SetProtocolID(SF_CHANNELLIST_REQ);
-	_game_session.SendPacket(sendmsg);
+	_game_session->SendPacket(sendmsg);
 
 	sendmsg.Clear();
 	sendmsg.SetProtocolID(SF_LOCATION_REQ);
-	_game_session.SendPacket(sendmsg);
+	_game_session->SendPacket(sendmsg);
 
 	//sendmsg.Clear();
 	//sendmsg.SetProtocolID(SF_MESSENGER_LOGIN_REQ);
-	//_game_session.SendPacket(sendmsg);
+	//_game_session->SendPacket(sendmsg);
 
 	sendmsg.Clear();
 	sendmsg.SetProtocolID(SF_ENDCLIENTLOADING_REQ);
 	sendmsg << false;
-	_game_session.SendPacket(sendmsg);
+	_game_session->SendPacket(sendmsg);
 
 	if( _new_user )
 	{
 		sendmsg.Clear();
 		sendmsg.SetProtocolID(SF_CHECKOVERLAPNICKNAME_REQ);
 		sendmsg << _code_name;
-		_game_session.SendPacket(sendmsg);
+		_game_session->SendPacket(sendmsg);
 	}
 	else
 	{
 		sendmsg.Clear();
 		sendmsg.SetProtocolID(SF_ENTERCHANNEL_REQ);
 		sendmsg << static_cast<byte>((_id % MAX_CHANNEL_COUNT)+1);
-		_game_session.SendPacket(sendmsg);
+		_game_session->SendPacket(sendmsg);
 	}
 }
 
@@ -463,7 +467,7 @@ void Dummy::OnEnterChannelAck( Packet& packet )
 			<< false						//bTracerBullet 
 			<< true;						//bTeamSwap;
 
-        _game_session.SendPacket(sendmsg);
+        _game_session->SendPacket(sendmsg);
     }    
 	else 
 		Destroy();
@@ -472,7 +476,7 @@ void Dummy::OnEnterChannelAck( Packet& packet )
 void Dummy::OnLeaveChannelAck( Packet& packet )
 {
     Packet sendmsg( SF_EXITGAMESERVER_REQ );
-    _game_session.SendPacket(sendmsg);
+    _game_session->SendPacket(sendmsg);
 }
 
 void Dummy::OnExitServerAck( Packet& packet )
