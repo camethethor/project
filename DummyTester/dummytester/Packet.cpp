@@ -36,15 +36,19 @@ Packet::Packet( const Packet& src_pack )
 	_recv_size = src_pack._recv_size;
 }
 
+Packet::Packet( const char* buf, const int size )
+: _data_begin_pos( NULL ), _read_pos( NULL ), _write_pos( NULL ), _recv_size( 0 )
+{
+	Clear();
+	CopyToBuffer( buf, size );
+}
+
 Packet::~Packet()
 {
 }
 
-bool Packet::IsValidHeader()
+bool Packet::CheckValidity()
 {
-	if( _recv_size < PACKET_HEADERSIZE )
-		return false;
-
 	if( _recv_size < PACKET_HEADERSIZE + GetDataFieldSize() )
 		return false;
 

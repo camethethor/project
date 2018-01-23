@@ -2,21 +2,22 @@
 #include "session.h"
 #include "Packet.h"
 
-class Dummy;
+class IPacketParser;
 class LoginSession : public Session
 {
 public:
-	LoginSession(Dummy* dmy );
+	LoginSession(IPacketParser* ipp );
 	virtual ~LoginSession(void);
 
 	bool Initialize();
+	
 	virtual bool OnCreate();
 	virtual void OnDestroy();
 	virtual int SendPacket( Packet& packet  );
 
 private:
-	virtual int PacketParsing( const char* pRecvBuffer, const int nRecvSize );
+	virtual int ReceiveHandler( const char* buf, const int size );
 
 private:
-	Dummy*	_dummy;
+	IPacketParser*	_packet_parser;
 };

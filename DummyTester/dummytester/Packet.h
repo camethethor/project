@@ -1,6 +1,6 @@
 #pragma once
-#include <windows.h>
 #include <string>
+#include <windows.h>
 
 const int	PACKET_BUFFERSIZE	 = (1024*8);
 const int	PACKET_HEADERSIZE	 = sizeof(unsigned short) + sizeof(unsigned int);
@@ -11,9 +11,10 @@ public:
 	Packet();
 	Packet( unsigned short _protocol_id );
 	Packet( const Packet& src_pack );
+	Packet( const char* buf, const int size );
 	virtual ~Packet();
 
-	bool IsValidHeader();	
+	bool CheckValidity();	
 	Packet& SetProtocolID( unsigned short ID );
 	unsigned short GetProtocolID() { return *_header._protocol_id; }
 

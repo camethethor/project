@@ -2,14 +2,11 @@
 #include "session.h"
 #include "Packet.h"
 
-const int MAX_NICKNAME_LENGTH = 16;
-const int MAX_NICKFLAG_LENGTH = 4;
-
-class Dummy;
+class IPacketParser;
 class GameSession : public Session
 {
 public:
-	GameSession( Dummy* dmy );
+	GameSession( IPacketParser* ipp );
 	virtual ~GameSession(void);
 	
 	virtual bool OnCreate();
@@ -17,8 +14,8 @@ public:
 	virtual int SendPacket( Packet& packet );
 
 private:
-	virtual int PacketParsing( const char* pRecvBuffer, const int nRecvSize );
+	virtual int ReceiveHandler( const char* buf, const int size );
 
 private:
-	Dummy*	_dummy;
+	IPacketParser*	_packet_parser;
 };

@@ -213,19 +213,19 @@
 				Name="Manager"
 				>
 				<File
-					RelativePath=".\DummyFactory.cpp"
+					RelativePath=".\DummyRunCreator.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\DummyFactory.h"
+					RelativePath=".\DummyRunCreator.h"
 					>
 				</File>
 				<File
-					RelativePath=".\DummyManager.cpp"
+					RelativePath=".\DummyRunManager.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\DummyManager.h"
+					RelativePath=".\DummyRunManager.h"
 					>
 				</File>
 			</Filter>
@@ -268,19 +268,27 @@
 					Name="Concreate"
 					>
 					<File
-						RelativePath=".\KRDummy.cpp"
-						>
-					</File>
-					<File
 						RelativePath=".\KRDummy.h"
 						>
 					</File>
 					<File
-						RelativePath=".\THDummy.cpp"
+						RelativePath=".\KRDummyRun.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\KRDummyRun.h"
 						>
 					</File>
 					<File
 						RelativePath=".\THDummy.h"
+						>
+					</File>
+					<File
+						RelativePath=".\THDummyRun.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\THDummyRun.h"
 						>
 					</File>
 				</Filter>
@@ -293,6 +301,18 @@
 					</File>
 					<File
 						RelativePath=".\Dummy.h"
+						>
+					</File>
+					<File
+						RelativePath=".\DummyRun.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\DummyRun.h"
+						>
+					</File>
+					<File
+						RelativePath=".\IPacketParser.h"
 						>
 					</File>
 				</Filter>
@@ -341,11 +361,11 @@
 				Name="Util"
 				>
 				<File
-					RelativePath="..\core\src\AutoCSLock.cpp"
+					RelativePath="..\core\src\LockObject.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\core\inc\AutoCSLock.h"
+					RelativePath="..\core\inc\LockObject.h"
 					>
 				</File>
 				<File

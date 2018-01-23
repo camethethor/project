@@ -55,15 +55,15 @@ public:
 	bool IsActive() { return _active; }
 
 	void SetSocket( SOCKET hSocket );
-	int SendPacket( char* packet_buf, int nSize );
+	int SendPacket( char* packet_buf, int size );
 
 	bool ConnectTo( const char* address, WORD wPort );
 	void CloseConnection();
-	void ForcedDisconnect( int nErrorCode );
+	void ForcedDisconnect( int err_code );
 
 protected:		
-	virtual int PacketParsing( const char* pRecvBuffer, const int nRecvSize ) = 0;
-	virtual void DispatchReceive( DWORD transfer_bytes );
+	virtual int ReceiveHandler( const char* buf, const int size ) = 0;
+	virtual void OnReceive( DWORD transfer_bytes );
 
 private:
 	bool ReceivePost();
@@ -82,9 +82,9 @@ private:
 
 	char*		_recv_buffer;	
 	const int	_recv_buf_size;	
-	int			_recv_packet_size;
+	int			_recv_size;
 
 	HANDLE		_event_hdle;
-	int			_send_packet_size;	
+	int			_send_size;	
 	const int	_max_send_packet_size;
 };

@@ -10,6 +10,7 @@ NetworkHandler::NetworkHandler()
 
 NetworkHandler::~NetworkHandler()
 {
+	ReleaseInstance();
 }
 
 NetworkHandler* NetworkHandler::GetInstance()

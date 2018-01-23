@@ -1,11 +1,11 @@
 #include "LoginSession.h"
 #include "Networkhandler.h"
-#include "Dummy.h"
+#include "IPacketParser.h"
 #include "Errcode.h"
 #include "config.h"
 
-LoginSession::LoginSession(Dummy* dmy )
-: Session( INVALID_SOCKET ), _dummy(dmy)
+LoginSession::LoginSession(IPacketParser* ipp )
+: Session( INVALID_SOCKET ), _packet_parser(ipp)
 {
 }
 
@@ -36,18 +36,14 @@ void LoginSession::OnDestroy()
 	Session::OnDestroy();
 }
 
-int LoginSession::PacketParsing( const char* pRecvBuffer, const int nRecvSize )
+int LoginSession::ReceiveHandler( const char* buf, const int size )
 {
-	Packet packet;
-	packet.CopyToBuffer( pRecvBuffer, nRecvSize );
+	Packet packet( buf, size );
 
-	if( packet.IsValidHeader() == false )
-	{
-		ForcedDisconnect( INVALID_HEADER );
-		return INVALID_HEADER;
-	}
+	if( packet.CheckValidity() == false )
+		return size;
 
-	return _dummy->MessageProc(packet);
+	return _packet_parser->PacketParsing(packet);
 }
 
 

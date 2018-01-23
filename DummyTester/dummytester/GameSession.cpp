@@ -3,10 +3,11 @@
 #include "Networkhandler.h"
 #include "errcode.h"
 #include "Config.h"
-#include "DummyManager.h"
+#include "DummyRunManager.h"
+#include "IPacketParser.h"
 
-GameSession::GameSession( Dummy* dmy )
-: Session( INVALID_SOCKET ), _dummy(dmy)
+GameSession::GameSession( IPacketParser* ipp )
+: Session( INVALID_SOCKET ), _packet_parser(ipp)
 {
 }
 
@@ -25,28 +26,24 @@ bool GameSession::OnCreate()
 	if( false == Session::OnCreate())
 		return false;
 	
-	DummyManager::GetInstance()->IncreaseActiveCount();
+	DummyRunManager::GetInstance()->IncreaseActiveCount();
 	return true;
 }
 
 void GameSession::OnDestroy()
 {
-	DummyManager::GetInstance()->DecreaseActiveCount();
+	DummyRunManager::GetInstance()->DecreaseActiveCount();
 	Session::OnDestroy();
 }
 
-int GameSession::PacketParsing( const char* pRecvBuffer, const int nRecvSize )
+int GameSession::ReceiveHandler( const char* buf, const int size )
 {
-	Packet packet;
-	packet.CopyToBuffer( pRecvBuffer, nRecvSize );
+	Packet packet( buf, size );
 
-	if( packet.IsValidHeader() == false )
-	{
-		ForcedDisconnect( INVALID_HEADER );
-		return INVALID_HEADER;
-	}
+	if( packet.CheckValidity() == false )
+		return size;
 
-	return _dummy->MessageProc(packet);
+	return _packet_parser->PacketParsing(packet);
 }
 
 

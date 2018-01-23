@@ -1,14 +1,16 @@
-#pragma once
-#include "dummy.h"
+#include "Dummy.h"
 
-class KRDummy :	public Dummy
+class KRDummy : public Dummy
 {
 public:
-	KRDummy(const unsigned long id);
+	KRDummy(const unsigned int id);
 	virtual ~KRDummy(void);
-
-	virtual void	Run();
-
-private:
-	virtual int		LocalMessageProc(Packet& packet);
 };
+
+KRDummy::KRDummy(const unsigned int id) : Dummy(id) 
+{
+}
+
+KRDummy::~KRDummy(void) 
+{
+}
