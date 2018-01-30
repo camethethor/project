@@ -21,7 +21,7 @@ bool GameSession::OnCreate()
 	if( !ConnectTo( GAMESERVER_IP, GAMESERVER_PORT ) )
 		return false;
 
-	NetworkHandler::GetInstance()->Associate( ( HANDLE )_sock, ( ULONG_PTR )this );
+	NetworkHandler::GetInstance()->Associate( reinterpret_cast<HANDLE>(_sock), reinterpret_cast<ULONG_PTR>(this));
 
 	if( false == Session::OnCreate())
 		return false;
